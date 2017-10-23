@@ -24,11 +24,13 @@ public:
 
 private:
 	int push_value;
+	int loopidx;
 
 	vector<string> Create_RanNum(void)
 	{
 
 		vector<int> store_rand;
+		vector<string> store_string;
 
 		// srand 시드값 생성
 		srand((unsigned int)time(NULL));
@@ -53,6 +55,12 @@ private:
 			}
 		}
 
+		
+
+		for(loopidx = 0; loopidx < store_rand.size(); loopidx++)
+		{
+			store_string.push_back(IntToString(store_rand[loopidx]));
+		}
 
 
 	} // end Create_RanNum Func
@@ -68,6 +76,16 @@ private:
 		return store_temp;
 
 	} // end Rand_Sort Func
+
+	string IntToString(int n)
+	{
+		stringstream s;
+
+		s << n;
+
+		return s.str();
+
+	} // end IntToString Func
 
 
 
