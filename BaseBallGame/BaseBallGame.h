@@ -1,11 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <windows.h>
+#ifndef _BASEBALLGAME_H__
+#define _BASEBALLGAME_H__
 
-typedef struct baseball_cnt_STR {
-	int strike_value;
-	int ball_value;
-	int out_value;
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+#include <algorithm>
 
-} baseball_cnt_Str;
+using namespace std;
+
+#endif
