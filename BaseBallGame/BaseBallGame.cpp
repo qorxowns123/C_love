@@ -47,8 +47,8 @@ public:
 			}
 		}
 
-		cout << "모든 기회가 끝났습니다... 3초 뒤 종료됩니다.";
-		Sleep(3000);
+		/*cout << "모든 기회가 끝났습니다... 3초 뒤 종료됩니다.";
+		Sleep(3000);*/
 	}
 
 private:
@@ -59,14 +59,28 @@ private:
 		int loopidx, loopjdx = 0;
 		cout << "정답을 입력하세요(3자리 숫자)" << endl;
 
-		cout << "첫번째 자리 입력 : ";
-		cin >> answer_arr[0];
 
-		cout << "두번째 자리 입력 : ";
-		cin >> answer_arr[1];
+		for(loopidx = 0; loopidx < 3; loopidx++)
+		{
+			cout << loopidx + 1 <<"번째 자리 입력 : ";
+			cin >> answer_arr[loopidx];
 
-		cout << "세번째 자리 입력 : ";
-		cin >> answer_arr[2];
+			if(cin.fail() == 1)
+			{
+				cout << "숫자가 아닌 문자를 입력하였습니다..." << endl;
+				// 에러 플래그 초기화(이 코드가 없으면, cin.fail()의 값이 계속 1로 유지)
+				cin.clear();
+				// 입력 버퍼를 지움.. C언어의 fflush(stdin)과 같음..
+				cin.ignore();
+				cout << loopidx + 1 <<"번째 자리 입력 : ";
+				cin >> answer_arr[loopidx];
+			}
+			else
+			{
+				continue;
+			}
+		}
+
 
 		for(loopidx = 0; loopidx < numlist.size(); loopidx++)
 		{
@@ -170,7 +184,7 @@ private:
 
 void main(void)
 {
-	int set_coin = 5;
+	int set_coin = 2;
 	GameLuncher game;
 	cout << "========= 총 기회 " << set_coin <<"번=========" << endl; 
 	game.GameMain(set_coin);

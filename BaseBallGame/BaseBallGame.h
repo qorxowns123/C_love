@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <sstream>
 #include <Windows.h>
+#include <ctype.h>
+
 using namespace std;
 
 #endif
