@@ -1,12 +1,10 @@
 #include "BaseBallGame.h"
 
 /* 
-1. 3자리 난수 생성(문자열로 리턴)
-2. 정답 입력 (문자열로 입력)
-3. 기회는 총 5번
+1. 3자리 난수 생성
+2. 정답 입력
 4. 판정 출력
 */
-
 
 class GameLuncher
 {
@@ -15,22 +13,114 @@ public:
 	int ball_value;
 	int out_value;
 
-	void GameMain(int coin)
+	// 생성자
+	GameLuncher()
 	{
+		strike_value = 0;
+		ball_value = 0;
+		out_value = 0;
+	}
+
+	void GameMain(int get_coin)
+	{
+		vector<int> numlist;
 		bool game_over_chk = false;
-		int f_coin = coin;
-		Create_RanNum();
+		int coin_set = get_coin;
+		numlist = this->CreateRanNum();
+
+		while(coin_set > 0)
+		{
+			game_over_chk = this->AnswerMatch(numlist);
+			if(game_over_chk == false)
+			{
+				coin_set--;
+				cout << "실패 -------------------- 남은기회(" << coin_set << ")번" << endl;
+				this->strike_value = 0;
+				this->ball_value = 0;
+				this->out_value = 0;
+				
+			}
+			else
+			{
+				cout << "성공!!";
+				break;
+			}
+		}
+
+		cout << "모든 기회가 끝났습니다... 3초 뒤 종료됩니다.";
+		Sleep(3000);
 	}
 
 private:
-	int push_value;
-	int loopidx;
+	bool AnswerMatch(vector<int> numlist)
+	{
+		bool match_chk = false;
+		int answer_arr[3];
+		int loopidx, loopjdx = 0;
+		cout << "정답을 입력하세요(3자리 숫자)" << endl;
 
-	vector<string> Create_RanNum(void)
+		cout << "첫번째 자리 입력 : ";
+		cin >> answer_arr[0];
+
+		cout << "두번째 자리 입력 : ";
+		cin >> answer_arr[1];
+
+		cout << "세번째 자리 입력 : ";
+		cin >> answer_arr[2];
+
+		for(loopidx = 0; loopidx < numlist.size(); loopidx++)
+		{
+			for(loopjdx = 0; loopjdx < numlist.size(); loopjdx++)
+			{
+				// 같은 원소가 있다면
+				if(answer_arr[loopidx] == numlist.at(loopjdx))
+				{
+					// 같은 위치인지 확인
+					if(loopidx == loopjdx)
+					{
+						strike_value = strike_value + 1;
+						break;
+					}
+					// 같은 위치가 아니라면
+					else
+					{
+						ball_value = ball_value + 1;
+						break;
+					}
+				}
+				else
+				{
+					// 같은것이 없다면..
+					if(loopjdx >= 2)
+					{
+						out_value = out_value + 1;
+						break;
+					}
+					else{/**/}
+				}
+			}
+		}
+
+		if(strike_value == 3)
+		{
+			match_chk = true;
+		}
+		else
+		{
+			match_chk = false;
+		}
+
+		cout << "Strike(" << strike_value <<") Ball(" << ball_value << ") Out(" << out_value <<")" << endl;
+
+		return match_chk;
+	}
+
+
+	vector<int> CreateRanNum(void)
 	{
 
 		vector<int> store_rand;
-		vector<string> store_string;
+		int push_value;
 
 		// srand 시드값 생성
 		srand((unsigned int)time(NULL));
@@ -40,7 +130,7 @@ private:
 			if(store_rand.size() == 3)
 			{
 				// 데이터 섞기
-				store_rand = Rand_Sort(store_rand);
+				store_rand = this->Rand_Sort(store_rand);
 				break;
 			}
 			else
@@ -55,12 +145,7 @@ private:
 			}
 		}
 
-		
-
-		for(loopidx = 0; loopidx < store_rand.size(); loopidx++)
-		{
-			store_string.push_back(IntToString(store_rand[loopidx]));
-		}
+		return store_rand;
 
 
 	} // end Create_RanNum Func
@@ -77,17 +162,6 @@ private:
 
 	} // end Rand_Sort Func
 
-	string IntToString(int n)
-	{
-		stringstream s;
-
-		s << n;
-
-		return s.str();
-
-	} // end IntToString Func
-
-
 
 }; // end GameLuncher Class
 
@@ -96,7 +170,9 @@ private:
 
 void main(void)
 {
+	int set_coin = 5;
 	GameLuncher game;
-	int coin = 3;
-	game.GameMain(coin);
+	cout << "========= 총 기회 " << set_coin <<"번=========" << endl; 
+	game.GameMain(set_coin);
+
 }
