@@ -3,8 +3,6 @@
 
 #include "IncludeHeader.h"
 
-HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
-
 class GameLuncher
 {
 protected:

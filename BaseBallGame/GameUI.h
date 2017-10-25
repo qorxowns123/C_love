@@ -1,7 +1,6 @@
 #ifndef _GAMEUI_H__
 #define _GAMEUI_H__
 
-#include "IncludeHeader.h"
 #include "GameEngin.h"
 
 
@@ -23,7 +22,7 @@ private:
 	void GameUiRun(void);
 	void GameUiTitle(void);
 	void gotoxy(int x, int y);
-	vector<int> InputAnswer(vector<int> store_rand, int get_coin);
+	vector<int> InputAnswer(void);
 
 }; // end GameUILuncher Class
 

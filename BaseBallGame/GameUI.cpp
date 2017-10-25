@@ -3,6 +3,7 @@
 void GameUILuncher::GameUiMain(void)
 {
 	vector<int> store_rand;
+
 	while(1)
 	{
 		GameUiTitle();
@@ -11,22 +12,13 @@ void GameUILuncher::GameUiMain(void)
 		{
 			// 콘솔에 표시된 화면 지우기
 			system("cls");
+			// 게임 화면 표시
+			GameUiRun();
+			// 3자리 난수 생성
+			store_rand = GameLuncher::CreateRanNum();
 			break;
 		}
 		else{/**/}
-	}
-
-	// 3자리 난수 생성
-	store_rand = GameLuncher::CreateRanNum();
-
-	while(this->get_coin > -1)
-	{
-		InputAnswer(store_rand, this->get_coin);
-		if(this->get_coin == -1)
-		{
-			// 게임오버 함수 만들기
-			break;
-		}
 	}
 } // end GameUiMain Func
 
@@ -70,9 +62,9 @@ void GameUILuncher::GameUiRun(void)
 
 } // end GameUiRun Func
 
-vector<int> GameUILuncher::InputAnswer(vector<int> store_rand, int get_coin)
+vector<int> GameUILuncher::InputAnswer(void)
 {
-	int input_list[3];
+	int input_list;
 	int loopidx = 0;
 	int temp = 0;
 	int x = 30; 
@@ -80,56 +72,18 @@ vector<int> GameUILuncher::InputAnswer(vector<int> store_rand, int get_coin)
 	bool check_flag = false;
 	vector<int> answerlist;
 
-	// 게임 화면 표시
-	GameUiRun();
-
-	// 코인 표시
-	gotoxy(x, y);
-	cout << "COIN : " << get_coin << endl;
-
 	// 정답 입력
 	x = 28; y = 11;
 	for(loopidx = 0; loopidx < 3; loopidx++)
 	{
 		gotoxy((x + temp), (y-1));
-		cin >> input_list[loopidx];
-		// 숫자가 아닌 문자가 입력되었을 경우...
-		if(cin.fail() == 1)
-		{
-			x = 19; y = 19;
-			gotoxy(x, y);
-			cout << "숫자가 아닌 문자를 입력하였습니다" << endl;
-			// 에러 플래그 초기화(이 코드가 없으면, cin.fail()의 값이 계속 1로 유지)
-			cin.clear();
-			// 입력 버퍼를 지움... C언어의 fflush(stdin)과 같음
-			cin.ignore();
-			GameUiRun();
-			cin >> input_list[loopidx];
-		}
-		answerlist.push_back(input_list[loopidx]);
+		cin >> input_list;
+		answerlist.push_back(input_list);
+		input_list = 0;
 		temp += 5;
 	}
 
-	check_flag = GameLuncher::AnswerMatch(store_rand, answerlist);
-
-	x = 25; y = 16;
-	gotoxy(x, y);
-
-	if(check_flag == false)
-	{
-		get_coin = get_coin - 1;
-		this->get_coin = get_coin;
-		SetConsoleTextAttribute(hC, 12);
-		cout << GameLuncher::strike_value <<" Strike ";
-		SetConsoleTextAttribute(hC, 9);
-		cout << GameLuncher::ball_value <<" Ball ";
-		SetConsoleTextAttribute(hC, 10);
-		cout << GameLuncher::out_value <<" Out" << endl;
-	}
-	else
-	{
-		cout << "정 to the 답" << endl;
-	}
+	//check_flag = GameLuncher::AnswerMatch(store_rand, answerlist);
 
 	return answerlist;
 

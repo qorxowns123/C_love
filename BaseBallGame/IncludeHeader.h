@@ -1,5 +1,5 @@
-#ifndef __INCLUDEHEADER_H__
-#define __INCLUDEHEADER_H__
+#ifndef _INCLUDEHEADER_H__
+#define _INCLUDEHEADER_H__
 
 #include <iostream>
 #include <string>
@@ -12,6 +12,8 @@
 #include <ctype.h>
 #include <conio.h>
 using namespace std;
+
+static HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
 
 
 #endif

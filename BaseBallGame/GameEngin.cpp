@@ -1,5 +1,40 @@
 #include "GameEngin.h"
 
+vector<int> GameLuncher::CreateRanNum(void)
+{
+
+	vector<int> store_rand;
+	int push_value;
+
+	// srand 시드값 생성
+	srand((unsigned int)time(NULL));
+
+	while(1)
+	{
+		if(store_rand.size() == 3)
+		{
+			// 데이터 섞기
+			store_rand = this->Rand_Sort(store_rand);
+			break;
+		}
+		else
+		{
+			push_value = (rand() % 10);
+			// 원소 넣기
+			store_rand.push_back(push_value);
+			// 오름차순 정렬
+			sort(store_rand.begin(), store_rand.end());
+			// 중복 제거
+			store_rand.erase(unique(store_rand.begin(), store_rand.end()), store_rand.end());
+		}
+	}
+
+	return store_rand;
+
+
+} // end Create_RanNum Func
+
+
 bool GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 {
 	// vector<int> numlist : 3자리 정답 정수
@@ -57,41 +92,6 @@ bool GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 
 	return match_chk;
 }
-
-
-vector<int> GameLuncher::CreateRanNum(void)
-{
-
-	vector<int> store_rand;
-	int push_value;
-
-	// srand 시드값 생성
-	srand((unsigned int)time(NULL));
-
-	while(1)
-	{
-		if(store_rand.size() == 3)
-		{
-			// 데이터 섞기
-			store_rand = this->Rand_Sort(store_rand);
-			break;
-		}
-		else
-		{
-			push_value = (rand() % 10);
-			// 원소 넣기
-			store_rand.push_back(push_value);
-			// 오름차순 정렬
-			sort(store_rand.begin(), store_rand.end());
-			// 중복 제거
-			store_rand.erase(unique(store_rand.begin(), store_rand.end()), store_rand.end());
-		}
-	}
-
-	return store_rand;
-
-
-} // end Create_RanNum Func
 
 
 vector<int> GameLuncher::Rand_Sort(vector<int> store_rand)
