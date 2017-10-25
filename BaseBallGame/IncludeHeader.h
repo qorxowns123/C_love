@@ -1,5 +1,5 @@
-#ifndef _BASEBALLGAME_H__
-#define _BASEBALLGAME_H__
+#ifndef __INCLUDEHEADER_H__
+#define __INCLUDEHEADER_H__
 
 #include <iostream>
 #include <string>
@@ -10,7 +10,8 @@
 #include <sstream>
 #include <Windows.h>
 #include <ctype.h>
-
+#include <conio.h>
 using namespace std;
+
 
 #endif
