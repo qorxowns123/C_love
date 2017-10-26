@@ -35,12 +35,11 @@ vector<int> GameLuncher::CreateRanNum(void)
 } // end Create_RanNum Func
 
 
-bool GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
+void GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 {
 	// vector<int> numlist : 3자리 정답 정수
 	// vector<int> answerlist : 사용자 입력 3자리 정수
 
-	bool match_chk = false;
 	int loopidx, loopjdx = 0;
 
 	this->strike_value = 0;
@@ -81,17 +80,7 @@ bool GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 		}
 	}
 
-	if(strike_value == 3)
-	{
-		match_chk = true;
-	}
-	else
-	{
-		match_chk = false;
-	}
-
-	return match_chk;
-}
+} // end AnswerMatch Func
 
 
 vector<int> GameLuncher::Rand_Sort(vector<int> store_rand)

@@ -19,10 +19,12 @@ public:
 	void GameUiMain(void);
 
 private:
-	void GameUiRun(void);
+	void GameUILuncher::GameUiRun(vector<int> answerlist);
 	void GameUiTitle(void);
 	void gotoxy(int x, int y);
 	vector<int> InputAnswer(void);
+	bool const GameUILuncher::PrintResult(void);
+	void const GameUILuncher::HistoryPrint(vector<int> answerlist);
 
 }; // end GameUILuncher Class
 

@@ -20,7 +20,7 @@ protected:
 		this->set_coin = 5;
 	}
 
-	bool AnswerMatch(vector<int> numlist, vector<int> answerlist);
+	void AnswerMatch(vector<int> numlist, vector<int> answerlist);
 	vector<int> CreateRanNum(void);
 	vector<int> Rand_Sort(vector<int> store_rand);
 

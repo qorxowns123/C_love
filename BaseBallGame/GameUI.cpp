@@ -2,7 +2,9 @@
 
 void GameUILuncher::GameUiMain(void)
 {
-	vector<int> store_rand;
+	vector<int> numlist;
+	vector<int> answerlist;
+	bool checkflag = false;
 
 	while(1)
 	{
@@ -13,17 +15,42 @@ void GameUILuncher::GameUiMain(void)
 			// 콘솔에 표시된 화면 지우기
 			system("cls");
 			// 게임 화면 표시
-			GameUiRun();
+			GameUiRun(answerlist);
 			// 3자리 난수 생성
-			store_rand = GameLuncher::CreateRanNum();
+			numlist = GameLuncher::CreateRanNum();
 			break;
 		}
 		else{/**/}
 	}
+
+	while(checkflag == false)
+	{
+		// 정답 입력
+		answerlist = InputAnswer();
+
+		// 정답 매치
+		GameLuncher::AnswerMatch(numlist, answerlist);
+		
+		system("cls");
+		GameUiRun(answerlist);
+
+		// 정답 출력
+		checkflag = PrintResult();
+
+		if(checkflag != false)
+		{
+			gotoxy(24, 18);
+			cout << "Game Over" << endl;
+			break;
+		}else{/**/}
+	}
+
+
+
 } // end GameUiMain Func
 
 
-void GameUILuncher::GameUiRun(void)
+void GameUILuncher::GameUiRun(vector<int> answerlist)
 {
 	int x = 20;
 	int y = 7;
@@ -59,6 +86,17 @@ void GameUILuncher::GameUiRun(void)
 	cout << "━" << endl;
 	gotoxy(x+10,y);
 	cout << "━" << endl;
+
+	gotoxy(62, 2);
+	cout << "History" << endl;
+	gotoxy(58, 3);
+	cout << "==================" << endl;
+
+	if(answerlist.size() != 0)
+	{
+		HistoryPrint(answerlist);
+	}
+	else{/**/}
 
 } // end GameUiRun Func
 
@@ -135,9 +173,78 @@ void GameUILuncher::GameUiTitle(void)
 } // end GameUiTitle Func
 
 
+bool const GameUILuncher::PrintResult(void)
+{
+	bool checkflag = false;
+
+	gotoxy(24, 16);
+	SetConsoleTextAttribute(hC, 10);
+	cout << this->strike_value <<" Strike ";
+	SetConsoleTextAttribute(hC, 14);
+	cout << this->ball_value <<" Ball ";
+	SetConsoleTextAttribute(hC, 12);
+	cout << this->out_value <<" Out ";
+	SetConsoleTextAttribute(hC, 7);
+
+	if(this->strike_value == 3)
+	{
+		checkflag = true;
+	}
+	else
+	{
+		checkflag = false;
+	}
+
+	return checkflag;
+
+} // end PrintResult Func
+
+void const GameUILuncher::HistoryPrint(vector<int> answerlist)
+{
+	int tempstore = 0;
+	int loopidx = 0;
+	static vector<int> store_num_list;
+	static vector<int> store_strike_list;
+	static vector<int> store_ball_list;
+	static vector<int> store_out_list;
+
+	tempstore = answerlist.at(0) * 100;
+	tempstore = tempstore + (answerlist.at(1) * 10);
+	tempstore = tempstore + answerlist.at(2);
+
+	store_num_list.push_back(tempstore);
+	store_strike_list.push_back(GameLuncher::strike_value);
+	store_ball_list.push_back(GameLuncher::ball_value);
+	store_out_list.push_back(GameLuncher::out_value);
+
+	gotoxy(60, 4);
+
+	for(loopidx = 0; loopidx < store_num_list.size(); loopidx++)
+	{
+		gotoxy(60, (4 + loopidx));
+		
+		cout << store_num_list.at(loopidx) << " --- ";
+		SetConsoleTextAttribute(hC, 10);
+		cout << store_strike_list.at(loopidx) << " ";
+		SetConsoleTextAttribute(hC, 14);
+		cout << store_ball_list.at(loopidx) << " ";
+		SetConsoleTextAttribute(hC, 12);
+		cout << store_out_list.at(loopidx);
+		SetConsoleTextAttribute(hC, 7);
+	}
+	
+
+} // end HistoryPrint Func
+
+
+
 void GameUILuncher::gotoxy(int x, int y)
 {
 	COORD Pos = {x-1, y-1};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 
 } // end gotoxy Func
+
+
+
+
