@@ -41,11 +41,10 @@ void GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 	// vector<int> answerlist : 사용자 입력 3자리 정수
 
 	int loopidx, loopjdx = 0;
-
+	
 	this->strike_value = 0;
 	this->ball_value = 0;
 	this->out_value = 0;
-
 
 	for(loopidx = 0; loopidx < numlist.size(); loopidx++)
 	{

@@ -79,12 +79,10 @@ void GameUILuncher::GameUiRun(vector<int> answerlist)
 	cout << "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒" << endl;
 
 
-	x = 28; y = 11;
+	x = 32; y = 11;
 	gotoxy(x,y);
 	cout << "━" << endl;
-	gotoxy(x+5,y);
-	cout << "━" << endl;
-	gotoxy(x+10,y);
+	gotoxy(x+2, y);
 	cout << "━" << endl;
 
 	gotoxy(62, 2);
@@ -104,24 +102,24 @@ vector<int> GameUILuncher::InputAnswer(void)
 {
 	int input_list;
 	int loopidx = 0;
-	int temp = 0;
+	int temp_value = 0;
 	int x = 30; 
 	int y = 2;
 	bool check_flag = false;
 	vector<int> answerlist;
 
 	// 정답 입력
-	x = 28; y = 11;
-	for(loopidx = 0; loopidx < 3; loopidx++)
-	{
-		gotoxy((x + temp), (y-1));
-		cin >> input_list;
-		answerlist.push_back(input_list);
-		input_list = 0;
-		temp += 5;
-	}
+	x = 32; y = 10;
+	gotoxy(x, y);
+	cin >> input_list;
+	
+	answerlist.push_back(input_list / 100);
 
-	//check_flag = GameLuncher::AnswerMatch(store_rand, answerlist);
+	temp_value = input_list % 100;
+	answerlist.push_back(temp_value / 10);
+	temp_value = temp_value % 10;
+
+	answerlist.push_back(temp_value);
 
 	return answerlist;
 
