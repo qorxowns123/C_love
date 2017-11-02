@@ -1,17 +1,31 @@
 #include "GameEngin.h"
 
-vector<int> GameLuncher::CreateRanNum(void)
+vector<int> GameLuncher::CreateRanNum(int select_level)
 {
 
 	vector<int> store_rand;
 	int push_value;
+	int choice_level = 0;
+
+	if(select_level == 1)
+	{
+		choice_level = 3; // 3자리
+	}
+	else if(select_level == 2)
+	{
+		choice_level = 4; // 4자리
+	}
+	else
+	{
+		choice_level = 5; // 5자리
+	}
 
 	// srand 시드값 생성
 	srand((unsigned int)time(NULL));
 
 	while(1)
 	{
-		if(store_rand.size() == 3)
+		if(store_rand.size() == choice_level)
 		{
 			// 데이터 섞기
 			store_rand = this->Rand_Sort(store_rand);
@@ -19,7 +33,7 @@ vector<int> GameLuncher::CreateRanNum(void)
 		}
 		else
 		{
-			push_value = (rand() % 10);
+			push_value = (rand() % 10); // 0~9까지
 			// 원소 넣기
 			store_rand.push_back(push_value);
 			// 오름차순 정렬
@@ -84,11 +98,31 @@ void GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 
 vector<int> GameLuncher::Rand_Sort(vector<int> store_rand)
 {
-	vector<int> store_temp;
+	vector<int> store_temp(store_rand.size());
+	int loopidx = 0;
+	int select_index = 0;
+	int insert_index = 0;
 
-	store_temp.push_back(store_rand[2]);
+	srand((unsigned int)time(NULL));
+
+	/*store_temp.push_back(store_rand[2]);
 	store_temp.push_back(store_rand[0]);
-	store_temp.push_back(store_rand[1]);
+	store_temp.push_back(store_rand[1]);*/
+
+	for(loopidx = 0; loopidx < 1000; loopidx++)
+	{
+		select_index = (rand() % store_rand.size()); // 0~4까지
+		insert_index = (rand() % store_rand.size()); // 0~4까지
+
+		if( (select_index > store_rand.size()) || (insert_index > store_rand.size()) )
+		{
+			continue;
+		}
+		else
+		{
+			store_temp[select_index] = store_rand[insert_index];
+		}
+	}
 
 	return store_temp;
 

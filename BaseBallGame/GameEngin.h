@@ -21,7 +21,7 @@ protected:
 	}
 
 	void AnswerMatch(vector<int> numlist, vector<int> answerlist);
-	vector<int> CreateRanNum(void);
+	vector<int> CreateRanNum(int select_level);
 	vector<int> Rand_Sort(vector<int> store_rand);
 
 
