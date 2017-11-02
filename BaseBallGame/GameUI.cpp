@@ -390,7 +390,7 @@ vector<int> GameUILuncher::CalInValue(int select_level, int input_list)
 	}
 
 	return temp_vector;
-}
+} // CalInValue Func
 
 
 
