@@ -4,20 +4,33 @@ void GameUILuncher::GameUiMain(void)
 {
 	vector<int> numlist;
 	vector<int> answerlist;
+	int select_level = 0;
 	bool checkflag = false;
 
 	while(1)
 	{
 		GameUiTitle();
-		// 키 입력을 받으면 넘어가도록 변경
 		if(getch())
+		{
+			break;
+		}
+		else{/**/}
+	}
+
+	while(1)
+	{
+		// 난이도 선택
+		select_level = SelectLevel();
+		// 키 입력을 받으면 넘어가도록 변경
+		if(select_level > 0)
 		{
 			// 콘솔에 표시된 화면 지우기
 			system("cls");
 			// 게임 화면 표시
 			GameUiRun(answerlist);
-			// 3자리 난수 생성
-			numlist = GameLuncher::CreateRanNum();
+
+			// 난이도 선택에 따른 난수 생성
+			numlist = GameLuncher::CreateRanNum(select_level);
 			break;
 		}
 		else{/**/}
@@ -26,7 +39,7 @@ void GameUILuncher::GameUiMain(void)
 	while(checkflag == false)
 	{
 		// 정답 입력
-		answerlist = InputAnswer();
+		answerlist = InputAnswer(select_level);
 
 		// 정답 매치
 		GameLuncher::AnswerMatch(numlist, answerlist);
@@ -44,7 +57,6 @@ void GameUILuncher::GameUiMain(void)
 			break;
 		}else{/**/}
 	}
-
 
 
 } // end GameUiMain Func
@@ -84,6 +96,8 @@ void GameUILuncher::GameUiRun(vector<int> answerlist)
 	cout << "━" << endl;
 	gotoxy(x+2, y);
 	cout << "━" << endl;
+	gotoxy(x+4, y);
+	cout << "━" << endl;
 
 	gotoxy(62, 2);
 	cout << "History" << endl;
@@ -98,11 +112,60 @@ void GameUILuncher::GameUiRun(vector<int> answerlist)
 
 } // end GameUiRun Func
 
-vector<int> GameUILuncher::InputAnswer(void)
+int GameUILuncher::SelectLevel(void)
+{
+	int x = 5;
+	int y = 5;
+	int loopidx = 0;
+	int select_level = 0;
+
+	gotoxy(x,y);
+	cout << "▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤" << endl;
+	for(loopidx = 1; loopidx < 11; loopidx++)
+	{
+		gotoxy(x, (y+loopidx));
+		if (loopidx == 3)
+		{
+			cout << "▤              +---------- 난이도 선택 ----------+           ▤";
+		}
+		else if(loopidx == 5)
+		{
+			cout << "▤";
+			SetConsoleTextAttribute(hC, 12);
+			cout << "                  1. 3자리";
+			SetConsoleTextAttribute(hC, 13);
+			cout << " 2. 4자리";
+			SetConsoleTextAttribute(hC, 14);
+			cout << "  3. 5자리";
+			SetConsoleTextAttribute(hC, 7);
+			cout << "               ▤";
+		}
+		else if(loopidx == 8)
+		{
+			cout << "▤                     Select Level :                         ▤";
+		}
+		else
+		{
+			cout << "▤                                                            ▤";
+		}
+
+	}
+
+	gotoxy(x, (y+loopidx));
+	cout << "▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤" << endl;
+
+	gotoxy(x+40, y+8);
+	cin >> select_level;
+
+	return select_level;
+
+} // end SelectLevel Func
+
+vector<int> GameUILuncher::InputAnswer(int select_level)
 {
 	int input_list;
 	int loopidx = 0;
-	int temp_value = 0;
+	int value_min, value_max;
 	int x = 30; 
 	int y = 2;
 	bool check_flag = false;
@@ -112,14 +175,42 @@ vector<int> GameUILuncher::InputAnswer(void)
 	x = 32; y = 10;
 	gotoxy(x, y);
 	cin >> input_list;
-	
-	answerlist.push_back(input_list / 100);
 
-	temp_value = input_list % 100;
-	answerlist.push_back(temp_value / 10);
-	temp_value = temp_value % 10;
+	if(select_level == 1)
+	{
+		value_min = 100;
+		value_max = 999;
+	}
+	else if(select_level == 2)
+	{
+		value_min = 1000;
+		value_max = 9999;
+	}
+	else
+	{
+		value_min = 10000;
+		value_max = 99999;
+	}
 
-	answerlist.push_back(temp_value);
+	if( (input_list > value_max) || (input_list < value_min) )
+	{
+		x = 17; y = 17;
+		gotoxy(x, y);
+		cout << "입력 숫자의 자리수를 정확히 입력해주세요...\n" << endl;
+		cin.ignore();
+		x = 32; y = 10;
+		gotoxy(x, y);
+		cout << "        ";
+		answerlist = InputAnswer(select_level);
+	}
+	else
+	{
+		answerlist = CalInValue(select_level, input_list);
+	}
+
+
+	//answerlist.push_back();
+	//3자리, 4자리, 5자리 파싱하기 만들기
 
 	return answerlist;
 
@@ -201,14 +292,30 @@ void const GameUILuncher::HistoryPrint(vector<int> answerlist)
 {
 	int tempstore = 0;
 	int loopidx = 0;
+	int mul_value = 0;
 	static vector<int> store_num_list;
 	static vector<int> store_strike_list;
 	static vector<int> store_ball_list;
 	static vector<int> store_out_list;
 
-	tempstore = answerlist.at(0) * 100;
-	tempstore = tempstore + (answerlist.at(1) * 10);
-	tempstore = tempstore + answerlist.at(2);
+	if(answerlist.size() == 3)
+	{
+		mul_value = 100;
+	}
+	else if(answerlist.size() == 4)
+	{
+		mul_value = 1000;
+	}
+	else
+	{
+		mul_value = 10000;
+	}
+
+	for(loopidx = 0; loopidx < answerlist.size(); loopidx++)
+	{
+		tempstore = tempstore + (answerlist.at(loopidx) * mul_value);
+		mul_value = mul_value / 10;
+	}
 
 	store_num_list.push_back(tempstore);
 	store_strike_list.push_back(GameLuncher::strike_value);
@@ -233,6 +340,57 @@ void const GameUILuncher::HistoryPrint(vector<int> answerlist)
 	
 
 } // end HistoryPrint Func
+
+vector<int> GameUILuncher::CalInValue(int select_level, int input_list)
+{
+	int temp_value = 0;
+	vector<int> temp_vector;
+
+	// 3자리
+	if(select_level == 1)
+	{
+		temp_vector.push_back(input_list / 100);
+		temp_value = input_list % 100;
+
+		temp_vector.push_back(temp_value / 10);
+		temp_value = temp_value % 10;
+
+		temp_vector.push_back(temp_value);
+	}
+	// 4자리
+	else if(select_level == 2)
+	{
+		temp_vector.push_back(input_list / 1000);
+		temp_value = input_list % 1000;
+
+		temp_vector.push_back(temp_value / 100);
+		temp_value = temp_value % 100;
+
+		temp_vector.push_back(temp_value / 10);
+		temp_value = temp_value % 10;
+
+		temp_vector.push_back(temp_value);
+	}
+	// 5자리
+	else
+	{
+		temp_vector.push_back(input_list / 10000);
+		temp_value = input_list % 10000;
+
+		temp_vector.push_back(temp_value / 1000);
+		temp_value = temp_value % 1000;
+
+		temp_vector.push_back(temp_value / 100);
+		temp_value = temp_value % 100;
+
+		temp_vector.push_back(temp_value / 10);
+		temp_value = temp_value % 10;
+
+		temp_vector.push_back(temp_value);
+	}
+
+	return temp_vector;
+}
 
 
 
