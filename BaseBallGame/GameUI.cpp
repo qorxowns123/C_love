@@ -48,7 +48,7 @@ void GameUILuncher::GameUiMain(void)
 		GameUiRun(answerlist);
 
 		// 정답 출력
-		checkflag = PrintResult();
+		checkflag = PrintResult(select_level);
 
 		if(checkflag != false)
 		{
@@ -262,7 +262,7 @@ void GameUILuncher::GameUiTitle(void)
 } // end GameUiTitle Func
 
 
-bool const GameUILuncher::PrintResult(void)
+bool const GameUILuncher::PrintResult(int select_level)
 {
 	bool checkflag = false;
 
@@ -275,7 +275,7 @@ bool const GameUILuncher::PrintResult(void)
 	cout << this->out_value <<" Out ";
 	SetConsoleTextAttribute(hC, 7);
 
-	if(this->strike_value == 3)
+	if(this->strike_value == (select_level+2))
 	{
 		checkflag = true;
 	}

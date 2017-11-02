@@ -2,10 +2,9 @@
 
 vector<int> GameLuncher::CreateRanNum(int select_level)
 {
-
-	vector<int> store_rand;
-	int push_value;
+	int push_value = 0;
 	int choice_level = 0;
+	vector<int> store_rand;
 
 	if(select_level == 1)
 	{
@@ -33,7 +32,7 @@ vector<int> GameLuncher::CreateRanNum(int select_level)
 		}
 		else
 		{
-			push_value = (rand() % 10); // 0~9까지
+			push_value = ((rand() % 9) + 1); // 1~9까지
 			// 원소 넣기
 			store_rand.push_back(push_value);
 			// 오름차순 정렬
@@ -83,7 +82,7 @@ void GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 			else
 			{
 				// 같은것이 없다면..
-				if(loopjdx == 2)
+				if(loopjdx == (numlist.size()-1))
 				{
 					this->out_value = this->out_value + 1;
 					break;
@@ -99,23 +98,29 @@ void GameLuncher::AnswerMatch(vector<int> numlist, vector<int> answerlist)
 vector<int> GameLuncher::Rand_Sort(vector<int> store_rand)
 {
 	vector<int> store_temp(store_rand.size());
-	int loopidx = 0;
+	int loopidx, loopjdx = 0;
 	int select_index = 0;
 	int insert_index = 0;
+	bool equal_flag = false;
 
 	srand((unsigned int)time(NULL));
 
-	/*store_temp.push_back(store_rand[2]);
-	store_temp.push_back(store_rand[0]);
-	store_temp.push_back(store_rand[1]);*/
-
-	for(loopidx = 0; loopidx < 1000; loopidx++)
+	for(loopidx = 0; loopidx < 9999; loopidx++)
 	{
-		select_index = (rand() % store_rand.size()); // 0~4까지
-		insert_index = (rand() % store_rand.size()); // 0~4까지
+		select_index = (rand() % store_rand.size()); 
+		insert_index = (rand() % store_rand.size());
 
-		if( (select_index > store_rand.size()) || (insert_index > store_rand.size()) )
+		for(loopjdx = 0; loopjdx < store_temp.size(); loopjdx++)
 		{
+			if(store_temp[loopjdx] == store_rand[insert_index])
+			{
+				equal_flag = true;
+			}else{/**/}
+		}
+
+		if(equal_flag == true)
+		{
+			equal_flag = false;
 			continue;
 		}
 		else

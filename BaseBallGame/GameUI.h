@@ -23,7 +23,7 @@ private:
 	void GameUiTitle(void);
 	int SelectLevel(void);
 	vector<int> InputAnswer(int select_level);
-	bool const PrintResult(void);
+	bool const PrintResult(int select_level);
 	void const HistoryPrint(vector<int> answerlist);
 	vector<int> CalInValue(int select_level, int input_list);
 	void gotoxy(int x, int y);
