@@ -8,14 +8,6 @@ class GameUILuncher : GameLuncher
 {
 
 public:
-	int get_coin;
-
-	// »ý¼ºÀÚ
-	GameUILuncher()
-	{
-		this->get_coin = GameLuncher::set_coin;
-	}
-
 	void GameUiMain(void);
 
 private:

@@ -176,36 +176,54 @@ vector<int> GameUILuncher::InputAnswer(int select_level)
 	gotoxy(x, y);
 	cin >> input_list;
 
-	if(select_level == 1)
-	{
-		value_min = 100;
-		value_max = 999;
-	}
-	else if(select_level == 2)
-	{
-		value_min = 1000;
-		value_max = 9999;
-	}
-	else
-	{
-		value_min = 10000;
-		value_max = 99999;
-	}
-
-	if( (input_list > value_max) || (input_list < value_min) )
+	// 숫자가 아닌 문자 입력 시...
+	if(cin.fail())
 	{
 		x = 17; y = 17;
 		gotoxy(x, y);
-		cout << "입력 숫자의 자리수를 정확히 입력해주세요...\n" << endl;
-		cin.ignore();
+		cout << "숫자이외에는 입력이 되지 않습니다..." << endl;
 		x = 32; y = 10;
 		gotoxy(x, y);
 		cout << "        ";
+		cin.clear();
+		cin.ignore();
 		answerlist = InputAnswer(select_level);
 	}
+	// 숫자만을 입력하였다면..
 	else
 	{
-		answerlist = CalInValue(select_level, input_list);
+		if(select_level == 1)
+		{
+			value_min = 100;
+			value_max = 999;
+		}
+		else if(select_level == 2)
+		{
+			value_min = 1000;
+			value_max = 9999;
+		}
+		else
+		{
+			value_min = 10000;
+			value_max = 99999;
+		}
+
+		// 자리수가 넘어가는 숫자 입력 시...
+		if( (input_list > value_max) || (input_list < value_min) )
+		{
+			x = 17; y = 17;
+			gotoxy(x, y);
+			cout << "입력 숫자의 자리수를 정확히 입력해주세요..." << endl;
+			cin.ignore();
+			x = 32; y = 10;
+			gotoxy(x, y);
+			cout << "        ";
+			answerlist = InputAnswer(select_level);
+		}
+		else
+		{
+			answerlist = CalInValue(select_level, input_list);
+		}
 	}
 
 
