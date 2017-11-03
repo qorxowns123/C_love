@@ -148,14 +148,26 @@ int GameUILuncher::SelectLevel(void)
 		{
 			cout << "▤                                                            ▤";
 		}
-
 	}
+
 
 	gotoxy(x, (y+loopidx));
 	cout << "▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤" << endl;
 
 	gotoxy(x+40, y+8);
 	cin >> select_level;
+	// 숫자가 아닌 문자 입력 시...
+	if(cin.fail())
+	{
+		x = 19; y = 18;
+		gotoxy(x, y);
+		cout << "올바른 난이도 선택을 해주십시오" << endl;
+		gotoxy(x+40, y+8);
+		cout << "        ";
+		cin.clear();
+		cin.ignore();
+		select_level = SelectLevel();
+	}
 
 	return select_level;
 
@@ -225,11 +237,6 @@ vector<int> GameUILuncher::InputAnswer(int select_level)
 			answerlist = CalInValue(select_level, input_list);
 		}
 	}
-
-
-	//answerlist.push_back();
-	//3자리, 4자리, 5자리 파싱하기 만들기
-
 	return answerlist;
 
 } // end InputAnswer Func
