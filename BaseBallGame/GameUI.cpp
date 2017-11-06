@@ -167,7 +167,7 @@ int GameUILuncher::SelectLevel(void)
 		cin.clear();
 		cin.ignore();
 		select_level = SelectLevel();
-	}
+	} else{/**/}
 
 	return select_level;
 
