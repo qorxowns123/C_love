@@ -44,10 +44,13 @@ class MyWindow(QMainWindow, QWidget):
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
 
-        self.tableWidget = QTableWidget()
-        self.tableWidget.setRowCount(4)
-        self.tableWidget.setColumnCount(2)
-        self.tableWidget.setItem(0, 0, QTableWidgetItem("aaa"))
+        # 테이블 설정
+        self.tableWidget = QTableWidget(self.tab1)
+        self.tableWidget.setRowCount(30)
+        self.tableWidget.setColumnCount(1)
+        for loopidx in range(0, 30):
+            self.tableWidget.setItem(loopidx, 0, QTableWidgetItem("aaa"))
+        self.tableWidget.resize(1824, 760)
         self.tableWidget.move(0, 0)
 
 
