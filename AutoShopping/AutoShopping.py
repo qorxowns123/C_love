@@ -1,8 +1,11 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
+import os
 
 
-def AutoCopang(driver, keyword):
+def AutoCoupang(keyword):
+
+    driver = webdriver.Chrome('chromedriver.exe')
     # 쿠팡 접속
     driver.get('https://www.coupang.com/')
     # 검색어 입력
@@ -11,6 +14,7 @@ def AutoCopang(driver, keyword):
     driver.find_element_by_xpath('//*[@id="headerSearchBtn"]').click()
     # 웹페이지 소스 추출
     getHtml = driver.page_source
+
     # HTML 소스 읽어오기
     getParser = BeautifulSoup(getHtml, 'html.parser')
 
@@ -27,15 +31,29 @@ def AutoCopang(driver, keyword):
         CoPangItemPriceList.append(getTagInfo[loopidx].text)
         
     # 태그를 통한 이미지 가져오기
+    dirName = '.\Image\Coupang'
+    if not os.path.isdir('.\Image'):
+        os.mkdir('.\Image')
+    if not os.path.isdir(dirName):
+        os.mkdir(dirName)
+
     CoPangItemImgList = []
     getTagInfo = getParser.find_all("dt", {"class": "image"})
+
     for loopidx in range(0, getTagInfo.__len__()):
-        CoPangItemImgList.append(getTagInfo[loopidx].contents[1].attrs['src'])
+        imageName = getTagInfo[loopidx].contents[1].attrs['src']
+        imageWebAddr = 'http:' + imageName
+        driver.get(imageWebAddr)
+        # 이미지 저장하기 전에 폴더 만들어 놓고 하기
+        fileName = dirName + '\Image' + str(loopidx) + '.png'
+        CoPangItemImgList.append(fileName)
+        driver.save_screenshot(fileName)
 
     driver.close()
 
+    return (CoPangItemNameList, CoPangItemPriceList, CoPangItemImgList)
+
 if __name__ == "__main__":
-    mainKeyword = '로봇청소기'
-    driver = webdriver.Chrome('chromedriver.exe')
-    driver = AutoCopang(driver, mainKeyword)
+    AutoCoupang('로봇청소기')
+
 
