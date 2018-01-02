@@ -5,7 +5,7 @@ import os
 
 def AutoCoupang(keyword):
 
-    driver = webdriver.Chrome('chromedriver.exe')
+    driver = webdriver.PhantomJS('phantomjs.exe')
     # 쿠팡 접속
     driver.get('https://www.coupang.com/')
     # 검색어 입력
@@ -52,8 +52,5 @@ def AutoCoupang(keyword):
     driver.close()
 
     return (CoPangItemNameList, CoPangItemPriceList, CoPangItemImgList)
-
-if __name__ == "__main__":
-    AutoCoupang('로봇청소기')
 
 
