@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 import AutoShopping
 
 class MyWindow(QMainWindow, QWidget):
@@ -84,12 +85,13 @@ class MyWindow(QMainWindow, QWidget):
 
 
     def cliked_make_btn(self):
-        [CouPangItemNameList, CouPangItemPriceList, CouPangItemImgList] = AutoShopping.AutoCoupang(self.SearchBox.text())
+        [CouPangItemNameList, CouPangItemPriceList, CoPangItemImgList] = AutoShopping.AutoCoupang(self.SearchBox.text())
         for loopidx in range(0, CouPangItemNameList.__len__()):
-            # 테이블에 이미지 삽입하기(좀더 찾아보고 안되면 cell 클릭시 새 창으로 이미지 보여주기로 구현)
-            #self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(CouPangItemImgList[loopidx]))
+            self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(QIcon(QPixmap(CoPangItemImgList[loopidx]).scaled(QSize(1280, 640), Qt.KeepAspectRatio)), ''))
             self.tableWidget1.setItem(loopidx, 1, QTableWidgetItem(CouPangItemNameList[loopidx]))
-            self.tableWidget1.setItem(loopidx, 2, QTableWidgetItem(CouPangItemPriceList[loopidx]))
+            self.tableWidget1.setItem(loopidx, 2, QTableWidgetItem(CouPangItemPriceList[loopidx] + '원'))
+        self.tableWidget1.resizeColumnsToContents()
+        self.tableWidget1.resizeRowsToContents()
         self.tableWidget1.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
 

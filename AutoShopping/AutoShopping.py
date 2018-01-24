@@ -27,6 +27,7 @@ def AutoCoupang(keyword):
     # 태그를 통한 가격 가져오기
     CoPangItemPriceList = []
     getTagInfo = getParser.find_all("strong", {"class": "price-value"})
+    getTagInfo_stock = getParser.find_all("span", {"class": "out-of-stock"})
     for loopidx in range(0, getTagInfo.__len__()):
         CoPangItemPriceList.append(getTagInfo[loopidx].text)
         
