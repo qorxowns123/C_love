@@ -65,7 +65,6 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget1.resize(1824, 760)
         self.tableWidget1.move(0, 0)
 
-
         # 테이블 설정(table2)
         self.tableWidget2 = QTableWidget(self.tab2)
         self.tableWidget2.setRowCount(30)
@@ -83,7 +82,6 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget3.move(0, 0)
 
 
-
     def cliked_make_btn(self):
         [CouPangItemNameList, CouPangItemPriceList, CoPangItemImgList] = AutoShopping.AutoCoupang(self.SearchBox.text())
         for loopidx in range(0, CouPangItemNameList.__len__()):
@@ -93,7 +91,6 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget1.resizeColumnsToContents()
         self.tableWidget1.resizeRowsToContents()
         self.tableWidget1.setEditTriggers(QAbstractItemView.NoEditTriggers)
-
 
 
 if __name__ == "__main__":
