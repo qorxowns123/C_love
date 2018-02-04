@@ -57,7 +57,7 @@ class MyWindow(QMainWindow, QWidget):
         self.setLayout(self.layout)
 
         # 테이블 설정(table1)
-        setNameList = ["이미지", "상품명", "가격"]
+        setNameList = ["상품명", "가격", "링크"]
         self.tableWidget1 = QTableWidget(self.tab1)
         self.tableWidget1.setRowCount(30)
         self.tableWidget1.setColumnCount(3)
@@ -83,11 +83,12 @@ class MyWindow(QMainWindow, QWidget):
 
 
     def cliked_make_btn(self):
-        [CouPangItemNameList, CouPangItemPriceList, CoPangItemImgList] = AutoShopping.AutoCoupang(self.SearchBox.text())
+        [CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.SearchBox.text())
         for loopidx in range(0, CouPangItemNameList.__len__()):
-            self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(QIcon(QPixmap(CoPangItemImgList[loopidx]).scaled(QSize(1280, 640), Qt.KeepAspectRatio)), ''))
-            self.tableWidget1.setItem(loopidx, 1, QTableWidgetItem(CouPangItemNameList[loopidx]))
-            self.tableWidget1.setItem(loopidx, 2, QTableWidgetItem(CouPangItemPriceList[loopidx] + '원'))
+            self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(CouPangItemNameList[loopidx]))
+            self.tableWidget1.setItem(loopidx, 1, QTableWidgetItem(CouPangItemPriceList[loopidx] + '원'))
+            # 링크는 버튼으로 만들어서 띄우도록 하기
+            self.tableWidget1.setItem(loopidx, 2, QTableWidgetItem(CoPangItemLinkList[loopidx]))
         self.tableWidget1.resizeColumnsToContents()
         self.tableWidget1.resizeRowsToContents()
         self.tableWidget1.setEditTriggers(QAbstractItemView.NoEditTriggers)
