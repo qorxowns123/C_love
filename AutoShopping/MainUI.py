@@ -1,7 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from selenium import webdriver
 import AutoShopping
 
 class MyWindow(QMainWindow, QWidget):
@@ -30,7 +29,7 @@ class MyWindow(QMainWindow, QWidget):
         self.SearchBtn.move(254, 41)
         self.SearchBtn.resize(50, 32)
         self.SearchBtn.setText('검색')
-        self.SearchBtn.clicked.connect(self.cliked_make_btn)
+        self.SearchBtn.clicked.connect(self.clicked_make_btn)
         self.SearchBtn.setAutoDefault(True)
 
         # 탭 그룹박스
@@ -82,16 +81,29 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget3.move(0, 0)
 
 
-    def cliked_make_btn(self):
+    def clicked_make_btn(self):
         [CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.SearchBox.text())
+        self.ItemLinkList = CoPangItemLinkList
         for loopidx in range(0, CouPangItemNameList.__len__()):
             self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(CouPangItemNameList[loopidx]))
             self.tableWidget1.setItem(loopidx, 1, QTableWidgetItem(CouPangItemPriceList[loopidx] + '원'))
-            # 링크는 버튼으로 만들어서 띄우도록 하기
-            self.tableWidget1.setItem(loopidx, 2, QTableWidgetItem(CoPangItemLinkList[loopidx]))
+            # 링크를 열기 위한 버튼 생성
+            self.btn1 = QPushButton('Link')
+            self.btn1.clicked.connect(self.clicked_link_btn)
+            self.tableWidget1.setCellWidget(loopidx, 2, self.btn1)
+
         self.tableWidget1.resizeColumnsToContents()
         self.tableWidget1.resizeRowsToContents()
         self.tableWidget1.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    def clicked_link_btn(self):
+        button = qApp.focusWidget()
+        index = self.tableWidget1.indexAt(button.pos())
+        if index.isValid():
+            driver = webdriver.Chrome('chromedriver.exe')
+            driver.get(self.ItemLinkList[index.row()])
+
+
 
 
 if __name__ == "__main__":
