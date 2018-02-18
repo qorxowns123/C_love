@@ -1,10 +1,8 @@
-from selenium import webdriver
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
+def AutoCoupang(driver, keyword):
 
-def AutoCoupang(keyword):
-
-    driver = webdriver.PhantomJS('phantomjs.exe')
     # 쿠팡 접속
     driver.get('https://www.coupang.com/')
     # 검색어 입력
@@ -39,8 +37,16 @@ def AutoCoupang(keyword):
     for loopidx in range(0, getTagInfo.__len__()):
         CoPangItemLinkList.append(getTagInfo[loopidx].find_element_by_css_selector('a').get_attribute("href"))
 
-    driver.close()
-
     return (CoPangItemNameList, CoPangItemPriceList, CoPangItemLinkList)
+
+def AutoTiMon(driver, keyword):
+
+    # 티몬 접속
+    driver.get('http://www.ticketmonster.co.kr/home')
+    # 검색어 입력 (실패; 확인하기)
+    aaa = driver.find_element_by_tag_name('data-value')
+    # 검색 버튼 클릭
+    driver.find_element_by_xpath('//*[@id="srchbar2"]/form/fieldset/button/i').click()
+
 
 

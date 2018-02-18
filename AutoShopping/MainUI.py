@@ -79,10 +79,15 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget3.setHorizontalHeaderLabels(setNameList)
         self.tableWidget3.resize(1824, 760)
         self.tableWidget3.move(0, 0)
-
+        
+        # 웹 드라이버 실행
+        #self.driver = webdriver.PhantomJS('phantomjs.exe')
+        self.driver = webdriver.Chrome('chromedriver.exe')
 
     def clicked_make_btn(self):
-        [CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.SearchBox.text())
+        #[CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.driver, self.SearchBox.text())
+        AutoShopping.AutoTiMon(self.driver, self.SearchBox.text())
+
         self.ItemLinkList = CoPangItemLinkList
         for loopidx in range(0, CouPangItemNameList.__len__()):
             self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(CouPangItemNameList[loopidx]))
