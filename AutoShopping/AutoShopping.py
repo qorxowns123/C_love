@@ -43,10 +43,24 @@ def AutoTiMon(driver, keyword):
 
     # 티몬 접속
     driver.get('http://www.ticketmonster.co.kr/home')
-    # 검색어 입력 (실패; 확인하기)
-    aaa = driver.find_element_by_tag_name('data-value')
-    # 검색 버튼 클릭
+
+    # 검색어 입력
+    # 쿠팡의 경우에는 data-value의 값이 세팅되어 있으면 그 값을 우선으로 하여 검색하기 때문에
+    # 이 값을 바꿔줘야 함
+    ele = driver.find_element_by_xpath('//*[@id="top_srch"]')
+    driver.execute_script("arguments[0].setAttribute('data-value',arguments[1])", ele, keyword)
+    # 검색버튼 클릭
     driver.find_element_by_xpath('//*[@id="srchbar2"]/form/fieldset/button/i').click()
+    # 웹페이지 소스 추출
+    getHtml = driver.page_source
+    # HTML 소스 읽어오기
+    getParser = BeautifulSoup(getHtml, 'html.parser')
+    # 태그를 통한 이름 가져오기
+    TiMonItemNameList = []
+    getTagInfo = getParser.find_all("strong", {"class": "deal_item_title"})
+    for loopidx in range(0, getTagInfo.__len__()):
+        TiMonItemNameList.append(getTagInfo[loopidx].text)
+
 
 
 
