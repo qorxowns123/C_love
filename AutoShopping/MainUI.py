@@ -81,32 +81,58 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget3.move(0, 0)
         
         # 웹 드라이버 실행
-        #self.driver = webdriver.PhantomJS('phantomjs.exe')
-        self.driver = webdriver.Chrome('chromedriver.exe')
+        self.driver = webdriver.PhantomJS('phantomjs.exe')
+        #self.driver = webdriver.Chrome('chromedriver.exe')
 
     def clicked_make_btn(self):
-        #[CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.driver, self.SearchBox.text())
-        AutoShopping.AutoTiMon(self.driver, self.SearchBox.text())
+        # 쿠팡 함수
+        [CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.driver, self.SearchBox.text())
+        # 티몬 함수
+        [TiMonItemNameList, TiMonItemPriceList, TiMonItemLinkList] = AutoShopping.AutoTiMon(self.driver, self.SearchBox.text())
 
-        self.ItemLinkList = CoPangItemLinkList
+        # 쿠팡 링크 버튼 구현
+        self.CouPangLinkBttn = CoPangItemLinkList
         for loopidx in range(0, CouPangItemNameList.__len__()):
             self.tableWidget1.setItem(loopidx, 0, QTableWidgetItem(CouPangItemNameList[loopidx]))
             self.tableWidget1.setItem(loopidx, 1, QTableWidgetItem(CouPangItemPriceList[loopidx] + '원'))
             # 링크를 열기 위한 버튼 생성
             self.btn1 = QPushButton('Link')
-            self.btn1.clicked.connect(self.clicked_link_btn)
+            self.btn1.clicked.connect(self.clicked_CouPanglink_btn)
             self.tableWidget1.setCellWidget(loopidx, 2, self.btn1)
 
         self.tableWidget1.resizeColumnsToContents()
         self.tableWidget1.resizeRowsToContents()
         self.tableWidget1.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        
+        # 티몬 링크 버튼 구현
+        self.TiMonLinkBttn = TiMonItemLinkList
+        for loopidx in range(0, TiMonItemLinkList.__len__()):
+            self.tableWidget2.setItem(loopidx, 0, QTableWidgetItem(TiMonItemNameList[loopidx]))
+            self.tableWidget2.setItem(loopidx, 1, QTableWidgetItem(TiMonItemPriceList[loopidx]))
+            # 링크를 열기 위한 버튼 생성
+            self.btn2 = QPushButton('Link')
+            self.btn2.clicked.connect(self.clicked_TiMonlink_btn)
+            self.tableWidget2.setCellWidget(loopidx, 2, self.btn2)
 
-    def clicked_link_btn(self):
+        self.tableWidget2.resizeColumnsToContents()
+        self.tableWidget2.resizeRowsToContents()
+        self.tableWidget2.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    # 쿠팡 버튼 클릭 시..
+    def clicked_CouPanglink_btn(self):
         button = qApp.focusWidget()
         index = self.tableWidget1.indexAt(button.pos())
         if index.isValid():
             driver = webdriver.Chrome('chromedriver.exe')
-            driver.get(self.ItemLinkList[index.row()])
+            driver.get(self.CouPangLinkBttn[index.row()])
+
+    # 티몬 버튼 클릭 시..
+    def clicked_TiMonlink_btn(self):
+        button = qApp.focusWidget()
+        index = self.tableWidget2.indexAt(button.pos())
+        if index.isValid():
+            driver = webdriver.Chrome('chromedriver.exe')
+            driver.get(self.TiMonLinkBttn[index.row()])
 
 
 

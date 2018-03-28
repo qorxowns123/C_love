@@ -49,17 +49,42 @@ def AutoTiMon(driver, keyword):
     # 이 값을 바꿔줘야 함
     ele = driver.find_element_by_xpath('//*[@id="top_srch"]')
     driver.execute_script("arguments[0].setAttribute('data-value',arguments[1])", ele, keyword)
+
     # 검색버튼 클릭
     driver.find_element_by_xpath('//*[@id="srchbar2"]/form/fieldset/button/i').click()
+
     # 웹페이지 소스 추출
     getHtml = driver.page_source
+
     # HTML 소스 읽어오기
     getParser = BeautifulSoup(getHtml, 'html.parser')
+
     # 태그를 통한 이름 가져오기
     TiMonItemNameList = []
     getTagInfo = getParser.find_all("strong", {"class": "deal_item_title"})
     for loopidx in range(0, getTagInfo.__len__()):
-        TiMonItemNameList.append(getTagInfo[loopidx].text)
+        ReplaceText = getTagInfo[loopidx].text.replace("\n", "")
+        ReplaceText = ReplaceText.replace("\t", "")
+        TiMonItemNameList.append(ReplaceText)
+
+    # 태그를 통한 가격 가져오기
+    TiMonItemPriceList = []
+    getTagInfo = getParser.find_all("span", {"class": "deal_item_price"})
+    for loopidx in range(0, getTagInfo.__len__()):
+        ReplaceText = getTagInfo[loopidx].text.replace("\n", "")
+        ReplaceText = ReplaceText.replace("\t", "")
+        # 할인 가격인 경우, 4,500원9,990원 이런식으로 나옴
+        FindStr = ReplaceText.find('원')
+        ReplaceText = ReplaceText[0:FindStr+1]
+        TiMonItemPriceList.append(ReplaceText)
+        
+    # 태그를 통한 상품 링크 가져오기
+    TiMonItemLinkList = []
+    getTagInfo = getParser.find_all("div", {"class": "deal_item_thumb"})
+    for loopidx in range(0, getTagInfo.__len__()):
+        TiMonItemLinkList.append(getTagInfo[loopidx].parent.attrs['href'])
+
+    return (TiMonItemNameList, TiMonItemPriceList, TiMonItemLinkList)
 
 
 
