@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
-from selenium import webdriver
+
+'''
+쿠팡 함수
+'''
 
 def AutoCoupang(driver, keyword):
 
@@ -38,6 +41,10 @@ def AutoCoupang(driver, keyword):
         CoPangItemLinkList.append(getTagInfo[loopidx].find_element_by_css_selector('a').get_attribute("href"))
 
     return (CoPangItemNameList, CoPangItemPriceList, CoPangItemLinkList)
+
+'''
+티몬 함수
+'''
 
 def AutoTiMon(driver, keyword):
 
@@ -85,6 +92,16 @@ def AutoTiMon(driver, keyword):
         TiMonItemLinkList.append(getTagInfo[loopidx].parent.attrs['href'])
 
     return (TiMonItemNameList, TiMonItemPriceList, TiMonItemLinkList)
+
+
+'''
+위메프 함수
+'''
+
+def AutoWeMape(driver, keyword):
+
+    # 위메프 접속
+    driver.get('http://www.wemakeprice.com')
 
 
 
