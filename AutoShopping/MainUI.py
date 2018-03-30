@@ -2,6 +2,11 @@ import sys
 from PyQt5.QtWidgets import *
 from selenium import webdriver
 import AutoShopping
+'''
+정렬 기능 넣기
+1. 아이템 이름 정렬
+2. 가격 정렬
+'''
 
 class MyWindow(QMainWindow, QWidget):
 
@@ -54,7 +59,6 @@ class MyWindow(QMainWindow, QWidget):
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
 
-
         setRowCountNum = 50
 
         # 테이블 설정(table1)
@@ -81,6 +85,11 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget3.setHorizontalHeaderLabels(setNameList)
         self.tableWidget3.resize(1824, 760)
         self.tableWidget3.move(0, 0)
+
+        # Status Bar
+        self.statusBar = QStatusBar(self)
+        self.setStatusBar(self.statusBar)
+        self.statusBar.showMessage('Ready')
         
         # 웹 드라이버 실행
         self.driver = webdriver.PhantomJS('phantomjs.exe')
@@ -88,9 +97,15 @@ class MyWindow(QMainWindow, QWidget):
 
     def clicked_make_btn(self):
         # 쿠팡 함수
+        self.statusBar.showMessage('쿠팡에서 정보를 가져오고 있습니다...')
         [CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.driver, self.SearchBox.text())
         # 티몬 함수
+        self.statusBar.showMessage('티몬에서 정보를 가져오고 있습니다...')
         [TiMonItemNameList, TiMonItemPriceList, TiMonItemLinkList] = AutoShopping.AutoTiMon(self.driver, self.SearchBox.text())
+
+        self.driver.close()
+
+        self.statusBar.showMessage('Ready')
 
         # 쿠팡 링크 버튼 구현
         self.CouPangLinkBttn = CoPangItemLinkList
@@ -125,16 +140,16 @@ class MyWindow(QMainWindow, QWidget):
         button = qApp.focusWidget()
         index = self.tableWidget1.indexAt(button.pos())
         if index.isValid():
-            driver = webdriver.Chrome('chromedriver.exe')
-            driver.get(self.CouPangLinkBttn[index.row()])
+            self.driver = webdriver.Chrome('chromedriver.exe')
+            self.driver.get(self.CouPangLinkBttn[index.row()])
 
     # 티몬 버튼 클릭 시..
     def clicked_TiMonlink_btn(self):
         button = qApp.focusWidget()
         index = self.tableWidget2.indexAt(button.pos())
         if index.isValid():
-            driver = webdriver.Chrome('chromedriver.exe')
-            driver.get(self.TiMonLinkBttn[index.row()])
+            self.driver = webdriver.Chrome('chromedriver.exe')
+            self.driver.get(self.TiMonLinkBttn[index.row()])
 
 
 
