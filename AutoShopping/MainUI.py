@@ -96,14 +96,19 @@ class MyWindow(QMainWindow, QWidget):
         #self.driver = webdriver.Chrome('chromedriver.exe')
 
     def clicked_make_btn(self):
-        # 쿠팡 함수
+        # 쿠팡 함수 호출
         self.statusBar.showMessage('쿠팡에서 정보를 가져오고 있습니다...')
         [CouPangItemNameList, CouPangItemPriceList, CoPangItemLinkList] = AutoShopping.AutoCoupang(self.driver, self.SearchBox.text())
-        # 티몬 함수
+
+        # 티몬 함수 호출
         self.statusBar.showMessage('티몬에서 정보를 가져오고 있습니다...')
         [TiMonItemNameList, TiMonItemPriceList, TiMonItemLinkList] = AutoShopping.AutoTiMon(self.driver, self.SearchBox.text())
+        
+        # 위메프 함수 호출
+        self.statusBar.showMessage('위메프에서 정보를 가져오고 있습니다...')
+        [WeMapeItemNameList, WeMapeItemPriceList, WeMapeItemLinkList] = AutoShopping.AutoWeMape(self.driver, self.SearchBox.text())
 
-        self.driver.close()
+        self.driver.quit()
 
         self.statusBar.showMessage('Ready')
 
@@ -135,6 +140,20 @@ class MyWindow(QMainWindow, QWidget):
         self.tableWidget2.resizeRowsToContents()
         self.tableWidget2.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
+        # 위메프 링크 버튼 구현
+        self.WeMapeBttn = WeMapeItemLinkList
+        for loopidx in range(0, WeMapeItemLinkList.__len__()):
+            self.tableWidget3.setItem(loopidx, 0, QTableWidgetItem(WeMapeItemNameList[loopidx]))
+            self.tableWidget3.setItem(loopidx, 1, QTableWidgetItem(WeMapeItemPriceList[loopidx]))
+            # 링크를 열기 위한 버튼 생성
+            self.btn3 = QPushButton('Link')
+            self.btn3.clicked.connect(self.clicked_WeMapelink_btn)
+            self.tableWidget3.setCellWidget(loopidx, 2, self.btn3)
+
+        self.tableWidget3.resizeColumnsToContents()
+        self.tableWidget3.resizeRowsToContents()
+        self.tableWidget3.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
     # 쿠팡 버튼 클릭 시..
     def clicked_CouPanglink_btn(self):
         button = qApp.focusWidget()
@@ -150,8 +169,14 @@ class MyWindow(QMainWindow, QWidget):
         if index.isValid():
             self.driver = webdriver.Chrome('chromedriver.exe')
             self.driver.get(self.TiMonLinkBttn[index.row()])
-
-
+            
+    # 위메프 버튼 클릭 시..
+    def clicked_WeMapelink_btn(self):
+        button = qApp.focusWidget()
+        index = self.tableWidget3.indexAt(button.pos())
+        if index.isValid():
+            self.driver = webdriver.Chrome('chromedriver.exe')
+            self.driver.get(self.WeMapeBttn[index.row()])
 
 
 if __name__ == "__main__":
@@ -159,3 +184,5 @@ if __name__ == "__main__":
     mywindow = MyWindow()
     mywindow.show()
     app.exec_()
+    app.exit(0)
+
