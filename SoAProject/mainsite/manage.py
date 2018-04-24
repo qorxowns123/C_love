@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    print('서버를 실행합니다')
+    print('Start Server')
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mainsite.settings")
     try:
         from django.core.management import execute_from_command_line
