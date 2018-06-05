@@ -15,9 +15,10 @@ class MyWindow(QMainWindow, QWidget):
         self.setupUI()
 
     def setupUI(self):
-        # self.setGeometry(15, 50, 1900, 950)
-        self.setGeometry(15, 50, 850, 950)
-
+        setWindow = QDesktopWidget().screenGeometry()
+        set_height = setWindow.height() - 130
+        set_width = setWindow.width() - 1070
+        self.setGeometry(15, 50, set_width, set_height)
         TextBoxIndex = [25, 42, 0]
 
         # 검색어 입력 텍스트 박스
