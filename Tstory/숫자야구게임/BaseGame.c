@@ -87,24 +87,29 @@ unsigned char answer_match(void)
 	{
 		if(g_answer[loopidx] == g_exam[loopidx])
 		{
+			/* 스트라이크 먼저 판별 */
 			strike_ball_out.strike += 1;
+			/* 스트라이크로 판별된 인덱스 저장 */
 			strike_flag[loopidx] = 1;
 		}
 	}
 
 	for(loopidx = 0; loopidx < game_level; loopidx++)
 	{
+		/* 스트라이크로 판별된 인덱스는 넘어가기 */
 		if(strike_flag[loopidx] == 1)
 		{
 			continue;
 		}
 		for(loopjdx = 0; loopjdx < game_level; loopjdx++)
 		{
+			/* 볼 판별*/
 			if(g_answer[loopidx] == g_exam[loopjdx])
 			{
 				strike_ball_out.ball += 1;
 				break;
 			}
+			/* 아웃 판별 */
 			else if(loopjdx == (game_level-1))
 			{
 				strike_ball_out.out += 1;
@@ -113,8 +118,6 @@ unsigned char answer_match(void)
 		}
 		
 	}
-
-
 	/* 숫자를 모두 맞췄다면.. 게임 클리어! */
 	if(strike_ball_out.strike == game_level)
 	{
@@ -141,7 +144,7 @@ unsigned char insert_answer(void)
 	switch(select_level)
 	{
 	case 1:
-		/* 3자리 */
+		/* 3자리 범위 설정 */
 		if ((get_answer < 0) || (get_answer > 999))
 		{
 			value_check = 0;
@@ -157,7 +160,7 @@ unsigned char insert_answer(void)
 		}
 		break;
 	case 2:
-		/* 4자리 */
+		/* 4자리 범위 설정 */
 		if ((get_answer < 1000) || (get_answer > 9999))
 		{
 			value_check = 0;
@@ -177,7 +180,7 @@ unsigned char insert_answer(void)
 		break;
 	case 3:
 	default:
-		/* 5자리 */
+		/* 5자리 범위 설정 */
 		if ((get_answer < 10000) || (get_answer > 99999))
 		{
 			value_check = 0;
@@ -200,6 +203,7 @@ unsigned char insert_answer(void)
 		break;
 	}
 
+	/* 입력한 정답이 범위를 벗어났을 경우 예외처리 */
 	if(value_check == 0)
 	{
 		printf("### 잘못된 범위의 수를 입력하였습니다\n");
@@ -250,6 +254,7 @@ void create_rand(void)
 	unsigned int loopidx = 0;
 	unsigned char game_level = 0;
 
+	/* 전역 변수 초기화 */
 	g_exam[0] = -1;
 	g_exam[1] = -1;
 	g_exam[2] = -1;
@@ -262,6 +267,7 @@ void create_rand(void)
 	g_answer[3] = -1;
 	g_answer[4] = -1;
 	
+	/* 현재 시간을 활용한 srand 함수 사용, 이렇게 사용하게 되면 랜덤 숫자가 나올 확률이 증가한다 */
 	srand(time(NULL));
 
 	switch(select_level)
@@ -280,6 +286,7 @@ void create_rand(void)
 
 	for(loopidx = 0; loopidx < game_level; loopidx++)
 	{
+		/* 0~9까지 랜덤함수 생성 및 저장 */
 		g_exam[loopidx] = (rand() % 9);
 	}
 
